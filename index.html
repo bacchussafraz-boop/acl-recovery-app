@@ -1,60 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACL Quest: Recovery RPG</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body>
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <span id="theme-icon">🌙</span>
-    </button>
-
-    <div class="app-container">
-        <header>
-            <h1>ACL Quest</h1>
-            <p id="sub-header">Strength & Recovery Phase</p>
-        </header>
-
+<div class="app-container">
+    <section id="tab-neo" class="section active">
         <div class="card mascot-card">
-            <div id="mascot-sprite">🦵</div>
-            <h2 id="mascot-name">Neo the Knee</h2>
+            <div id="mascot-sprite">🦵🏾</div>
+            <h2 id="mascot-lvl">Level 1</h2>
             <div class="stats-grid">
-                <div class="stat"><span>STR</span><b id="str">5</b></div>
-                <div class="stat"><span>AGI</span><b id="agi">5</b></div>
-                <div class="stat"><span>VIT</span><b id="vit">5</b></div>
+                <div>STR <b id="str">1</b></div>
+                <div>AGI <b id="agi">1</b></div>
+                <div>VIT <b id="vit">1</b></div>
             </div>
-            <div class="progress-container">
-                <div class="progress-label">Level <span id="lvl">1</span></div>
-                <div class="bar-bg"><div id="xp-bar" class="bar-fill"></div></div>
-            </div>
-            <div class="streak-info">
-                <span>🔥 Streak: <b id="streak">0</b> days</span>
-                <span>🛡️ Rest: <b id="rest">1</b></span>
-            </div>
+            <p id="loot-timer" style="color:var(--accent); font-weight:bold;"></p>
+            <button id="claim-btn" class="btn-done" style="display:none;" onclick="claimLoot()">Claim Daily Loot</button>
         </div>
+    </section>
 
-        <div class="card">
-            <h3>Fuel Neo</h3>
-            <div class="input-group">
-                <input type="text" id="meal-input" placeholder="What did you eat?">
-                <button onclick="logMeal()">Log Meal</button>
-            </div>
-            <p id="buff-status">Buff: None</p>
+    <section id="tab-workout" class="section">
+        <h3>Active Routine</h3>
+        <div id="active-workouts"></div>
+        <hr>
+        <h3>Upcoming Quests</h3>
+        <div id="locked-workouts"></div>
+    </section>
+
+    <section id="tab-logs" class="section">
+        <h3>Nutrition History</h3>
+        <div class="input-group">
+            <input type="text" id="meal-input" placeholder="Chicken, Rice, etc.">
+            <button onclick="logMeal()">Log</button>
         </div>
+        <div id="meal-list"></div>
+    </section>
 
-        <div id="workout-list"></div>
-    </div>
+    <section id="tab-boss" class="section">
+        <h3>Boss Encounters</h3>
+        <div id="boss-list"></div>
+    </section>
+</div>
 
-    <div id="reward-overlay" class="hidden">🎉 NEW LOOT! 🎉</div>
-
-    <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
-</body>
-</html>
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="showTab('neo', this)">🛡️</div>
+    <div class="nav-item" onclick="showTab('workout', this)">⚡</div>
+    <div class="nav-item" onclick="showTab('logs', this)">🥗</div>
+    <div class="nav-item" onclick="showTab('boss', this)">👹</div>
+</nav>
