@@ -1,78 +1,53 @@
 :root {
-    --bg: #f8f9fa;
+    --bg: #f0f2f5; /* Soft Gray */
     --card: #ffffff;
     --text: #2d3436;
-    --muted: #636e72;
-    --accent: #0984e3;
+    --accent: #6c5ce7;
     --success: #00b894;
-    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+    --shadow: 0 8px 30px rgba(0,0,0,0.05);
 }
 
 [data-theme="dark"] {
-    --bg: #121212;
-    --card: #1e1e1e;
+    --bg: #1a1a1b;
+    --card: #2d2d2e;
     --text: #f5f6fa;
-    --muted: #b2bec3;
-    --shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 body {
-    background: var(--bg);
+    background-color: var(--bg);
+    /* Subtle decorative pattern */
+    background-image: radial-gradient(var(--text) 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    background-opacity: 0.05;
     color: var(--text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    margin: 0;
-    transition: background 0.3s ease;
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 0; padding-bottom: 80px; /* Space for tabs */
 }
 
-.app-container {
-    max-width: 450px;
-    margin: auto;
-    padding: 20px;
-}
+.app-container { max-width: 480px; margin: auto; padding: 20px; }
 
-.card {
+/* Modern Tabs */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
     background: var(--card);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+    display: flex; justify-content: space-around;
+    padding: 15px; border-top: 1px solid rgba(0,0,0,0.1);
+    z-index: 1000;
 }
 
-.mascot-card { text-align: center; }
-#mascot-sprite { font-size: 60px; margin: 10px; }
+.nav-item { font-size: 20px; cursor: pointer; opacity: 0.5; }
+.nav-item.active { opacity: 1; transform: translateY(-5px); color: var(--accent); }
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin: 15px 0;
+/* Buttons & Elements */
+.btn-done {
+    background: linear-gradient(135deg, var(--accent), #a29bfe);
+    color: white; border: none; padding: 10px 20px;
+    border-radius: 50px; font-weight: bold; transition: 0.3s;
 }
 
-.stat { background: var(--bg); padding: 10px; border-radius: 12px; }
-.stat span { display: block; font-size: 0.7rem; color: var(--muted); }
+.btn-done:disabled { background: #ccc; transform: none; }
 
-.bar-bg { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; }
-.bar-fill { background: var(--success); height: 100%; width: 0%; transition: width 0.5s; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.3s; }
 
-.workout-card {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-}
-
-.locked { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
-
-.theme-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    border: none;
-    background: var(--card);
-    cursor: pointer;
-}
-
-.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
