@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACL Quest: Recovery RPG</title>
+    <title>ACL Quest</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 </head>
@@ -11,25 +11,28 @@
     <div class="app-container">
         <section id="tab-neo" class="section active">
             <div class="card mascot-card">
-                <div id="mascot-sprite">💪🏾</div>
+                <div id="mascot-container">
+                    <img id="neo-img" src="neo-v1.png" alt="Neo">
+                </div>
                 <h2 id="neo-lvl">Level 1</h2>
                 <div class="stats-grid">
                     <div class="stat-box">STR <b id="str">1.0</b></div>
                     <div class="stat-box">AGI <b id="agi">1.0</b></div>
                     <div class="stat-box">VIT <b id="vit">1.0</b></div>
                 </div>
-                <div id="adventure-status">Neo is preparing...</div>
+                <div id="adventure-status">Loading Neo...</div>
                 <button id="claim-btn" class="btn-done" style="display:none; width:100%; margin-top:15px;" onclick="claimLoot()">Claim Adventure Loot</button>
+            </div>
+
+            <div class="card">
+                <h3>Today's Routine</h3>
+                <div id="active-list"></div>
             </div>
         </section>
 
-        <section id="tab-workouts" class="section">
+        <section id="tab-roadmap" class="section">
             <div class="card">
-                <h3>Current Routine</h3>
-                <div id="active-list"></div>
-            </div>
-            <div class="card locked-card">
-                <h3>Future Quests</h3>
+                <h3>Recovery Roadmap</h3>
                 <div id="locked-list"></div>
             </div>
         </section>
@@ -37,8 +40,8 @@
         <section id="tab-logs" class="section">
             <div class="card">
                 <h3>Fuel Neo</h3>
-                <input type="text" id="meal-name" placeholder="Meal name (e.g. Steak)">
-                <input type="number" id="meal-cals" placeholder="Calories (e.g. 700)">
+                <input type="text" id="meal-name" placeholder="Meal name">
+                <input type="number" id="meal-cals" placeholder="Calories">
                 <button class="btn-done" style="width:100%; margin-top:10px;" onclick="logMeal()">Log Meal</button>
             </div>
             <div id="history-list"></div>
@@ -51,16 +54,11 @@
 
     <nav class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('neo', this)">🛡️</div>
-        <div class="nav-item" onclick="switchTab('workouts', this)">⚡</div>
+        <div class="nav-item" onclick="switchTab('roadmap', this)">🗺️</div>
         <div class="nav-item" onclick="switchTab('logs', this)">🥗</div>
         <div class="nav-item" onclick="switchTab('boss', this)">👹</div>
     </nav>
 
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(() => console.log("SW Registered"));
-        }
-    </script>
 </body>
 </html>
