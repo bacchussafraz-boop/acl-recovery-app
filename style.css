@@ -1,10 +1,10 @@
 :root {
-    --bg: #f0f2f5; /* Soft Gray */
+    --bg: #f0f2f5; /* Soft Neutral Gray */
     --card: #ffffff;
     --text: #2d3436;
     --accent: #6c5ce7;
     --success: #00b894;
-    --shadow: 0 8px 30px rgba(0,0,0,0.05);
+    --shadow: 0 10px 25px rgba(0,0,0,0.04);
 }
 
 [data-theme="dark"] {
@@ -15,39 +15,56 @@
 
 body {
     background-color: var(--bg);
-    /* Subtle decorative pattern */
+    /* Decorative Dot Pattern */
     background-image: radial-gradient(var(--text) 0.5px, transparent 0.5px);
-    background-size: 20px 20px;
-    background-opacity: 0.05;
+    background-size: 24px 24px;
+    background-attachment: fixed;
     color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
-    margin: 0; padding-bottom: 80px; /* Space for tabs */
+    font-family: 'Inter', -apple-system, sans-serif;
+    margin: 0; padding-bottom: 90px;
+    transition: background 0.3s ease;
 }
 
 .app-container { max-width: 480px; margin: auto; padding: 20px; }
 
-/* Modern Tabs */
+.card {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+/* Bottom Navigation Tabs */
 .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--card);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
     display: flex; justify-content: space-around;
-    padding: 15px; border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 12px 0 25px 0;
+    border-top: 1px solid rgba(0,0,0,0.05);
     z-index: 1000;
 }
 
-.nav-item { font-size: 20px; cursor: pointer; opacity: 0.5; }
-.nav-item.active { opacity: 1; transform: translateY(-5px); color: var(--accent); }
+.nav-item { font-size: 24px; cursor: pointer; opacity: 0.4; transition: 0.3s; }
+.nav-item.active { opacity: 1; transform: scale(1.1); color: var(--accent); }
 
-/* Buttons & Elements */
-.btn-done {
-    background: linear-gradient(135deg, var(--accent), #a29bfe);
-    color: white; border: none; padding: 10px 20px;
-    border-radius: 50px; font-weight: bold; transition: 0.3s;
+/* Workout List Styles */
+.workout-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
 }
+.locked-item { filter: grayscale(1); opacity: 0.4; }
 
-.btn-done:disabled { background: #ccc; transform: none; }
+.btn-done {
+    background: var(--accent); color: white; border: none;
+    padding: 8px 16px; border-radius: 12px; font-weight: 600;
+    cursor: pointer; transition: 0.2s;
+}
+.btn-done:disabled { background: #ccc; cursor: default; }
 
 .section { display: none; }
-.section.active { display: block; animation: fadeIn 0.3s; }
+.section.active { display: block; animation: slideUp 0.4s ease-out; }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
