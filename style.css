@@ -1,0 +1,78 @@
+:root {
+    --bg: #f8f9fa;
+    --card: #ffffff;
+    --text: #2d3436;
+    --muted: #636e72;
+    --accent: #0984e3;
+    --success: #00b894;
+    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+[data-theme="dark"] {
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #f5f6fa;
+    --muted: #b2bec3;
+    --shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin: 0;
+    transition: background 0.3s ease;
+}
+
+.app-container {
+    max-width: 450px;
+    margin: auto;
+    padding: 20px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.mascot-card { text-align: center; }
+#mascot-sprite { font-size: 60px; margin: 10px; }
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.stat { background: var(--bg); padding: 10px; border-radius: 12px; }
+.stat span { display: block; font-size: 0.7rem; color: var(--muted); }
+
+.bar-bg { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; }
+.bar-fill { background: var(--success); height: 100%; width: 0%; transition: width 0.5s; }
+
+.workout-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.locked { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    border: none;
+    background: var(--card);
+    cursor: pointer;
+}
+
+.hidden { display: none; }
