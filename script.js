@@ -1,4 +1,4 @@
-// 1. DATA & MASTER LIST
+// 1. DATA DEFINITIONS
 const lootTable = [
     { name: "Protein Shake", boost: "str", value: 1.0, icon: "🥤" },
     { name: "Excalibur's Crutch", boost: "agi", value: 2.0, icon: "🦯" },
@@ -33,21 +33,40 @@ for(let i=9; i<=105; i++){
     exerciseMasterList.push({ id: i, name: `${types[i%3]} Mastery #${i}`, baseReps: 10, weight: i%2?35:8, type: types[i%3], equip: equips[i%4] });
 }
 
-// 2. STATE (LEVEL 1 START)
-let state = JSON.parse(localStorage.getItem('acl_final_v1.0')) || {
+// 2. STATE (WITH STREAKS)
+let state = JSON.parse(localStorage.getItem('acl_final_v1.1')) || {
     xp: 0, lvl: 1, str: 1.0, agi: 1.0, vit: 1.0,
     dailyRotation: [], exerciseStats: {}, completedToday: [],
     inventory: [], lastReset: null, streak: 0, isRestDay: false, 
-    meals: [], bossesDefeated: 0, adventureActive: false
+    meals: [], bossesDefeated: 0, adventureActive: false,
+    streakBroken: false
 };
 
-function save() { localStorage.setItem('acl_final_v1.0', JSON.stringify(state)); }
+function save() { localStorage.setItem('acl_final_v1.1', JSON.stringify(state)); }
 
 // 3. CORE LOGIC
 function init() {
-    const today = new Date().toDateString();
+    const now = new Date();
+    const today = now.toDateString();
+    
     if (state.lastReset !== today) {
-        state.lastReset = today; state.completedToday = []; state.streak++;
+        // Check if a day was skipped (Streak Logic)
+        if (state.lastReset) {
+            const lastDate = new Date(state.lastReset);
+            const diffDays = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays > 1) {
+                state.streak = 0; // Skip detected
+                state.streakBroken = true;
+            } else {
+                state.streak++;
+                state.streakBroken = false;
+            }
+        } else {
+            state.streak = 1;
+        }
+
+        state.lastReset = today;
+        state.completedToday = [];
         state.isRestDay = (state.streak % 7 === 0);
         if(!state.isRestDay) generateDailyRoutine();
         save();
@@ -73,7 +92,7 @@ function renderWorkouts() {
     
     if (state.isRestDay) {
         list.innerHTML = `<div class='card' style='border:2px solid var(--success); text-align:center;'>
-            <h3 style="color:var(--success)">REST DAY</h3><p>Neo is recovering. Mobility day.</p>
+            <h3 style="color:var(--success)">REST DAY</h3><p>Mandatory recovery for joint health.</p>
             <button class='btn-done' onclick='completeRest()'>Claim Recovery Boost</button></div>`;
         return;
     }
@@ -92,17 +111,25 @@ function renderWorkouts() {
 window.completeWorkout = function(id) {
     if(state.completedToday.includes(id)) return;
     state.completedToday.push(id);
+    
+    // Streak Bonus Calculation (Every 5 streak days adds 0.1 extra)
+    const bonus = (Math.floor(state.streak / 5) * 0.1);
     const s = state.exerciseStats[id];
-    s.reps += 1; if(s.reps > 15) { s.reps = 8; s.sets++; }
-    state.str += 0.4; state.xp += 20;
+    s.reps += 1; 
+    if(s.reps > 15) { s.reps = 8; s.sets++; }
+    
+    state.str += (0.4 + bonus); 
+    state.xp += 20;
     if(state.completedToday.length >= 7) state.adventureActive = true;
     save(); renderAll();
 };
 
 window.completeRest = function() {
     if(state.completedToday.includes('rest')) return;
-    state.vit += 3.0; state.completedToday.push('rest'); 
+    state.vit += 3.0; 
+    state.completedToday.push('rest'); 
     save(); renderAll();
+    alert("Neo is rested. Streak Maintained.");
 };
 
 window.logMeal = function() {
@@ -110,15 +137,18 @@ window.logMeal = function() {
     const c = document.getElementById('meal-cals').value;
     if(!n || !c) return;
     const boost = parseFloat((c/500).toFixed(1));
-    state.vit += boost; state.meals.unshift(`${n} (+${boost} VIT)`);
+    state.vit += boost;
+    state.meals.unshift(`${n} (+${boost} VIT)`);
     save(); renderAll();
 };
 
 window.claimLoot = function() {
     const item = lootTable[Math.floor(Math.random()*lootTable.length)];
     state.inventory.unshift(`${item.icon} ${item.name}`);
-    state[item.boost] += item.value; state.adventureActive = false;
+    state[item.boost] += item.value;
+    state.adventureActive = false;
     save(); renderAll();
+    alert(`Loot Found: ${item.name}!`);
 };
 
 window.fightBoss = function(idx) {
@@ -126,7 +156,7 @@ window.fightBoss = function(idx) {
     if((state.str + state.agi + state.vit) >= b.req) {
         state.bossesDefeated = idx + 1;
         save(); renderAll();
-        alert(`VICTORY! Defeated ${b.name}!`);
+        alert(`Boss Defeated: ${b.name}!`);
     }
 };
 
@@ -136,12 +166,12 @@ function checkAdventureTime() {
     const status = document.getElementById('adventure-status');
     if(!status) return;
     if(state.adventureActive && hrs >= 21) {
-        status.innerText = "Neo is back!"; btn.style.display = "block";
+        status.innerText = "Neo has returned!"; btn.style.display = "block";
     } else if (state.adventureActive) {
-        status.innerText = "Neo is questing... (Returns at 9PM)"; btn.style.display = "none";
+        status.innerText = "Neo is adventuring... (Back at 9PM)"; btn.style.display = "none";
     } else {
         const rem = 7 - state.completedToday.length;
-        status.innerText = rem > 0 ? `Finish ${rem} more for quest.` : "Ready!";
+        status.innerText = rem > 0 ? `${rem} tasks left today.` : "Neo is ready!";
         btn.style.display = "none";
     }
 }
@@ -149,7 +179,11 @@ function checkAdventureTime() {
 function updateMascotUI() {
     const tot = state.str + state.agi + state.vit;
     const img = document.getElementById('neo-img');
+    const streakEl = document.getElementById('streak-display');
     if(!img) return;
+
+    if (streakEl) streakEl.innerText = `🔥 Streak: ${state.streak} Days`;
+    
     if (tot >= 40) img.src = "neo-v3.png";
     else if (tot >= 15) img.src = "neo-v2.png";
     else img.src = "neo-v1.png";
@@ -161,14 +195,12 @@ function updateMascotUI() {
 }
 
 function renderAll() {
-    renderWorkouts(); updateMascotUI();
-    
+    renderWorkouts(); 
+    updateMascotUI();
     const inv = document.getElementById('inventory-list');
     if(inv) inv.innerHTML = state.inventory.map(i => `<span class='item-chip'>${i}</span>`).join('');
-    
     const hist = document.getElementById('history-list');
     if(hist) hist.innerHTML = state.meals.slice(0,3).map(m => `<div class='workout-item' style='font-size:0.8rem;'>${m}</div>`).join('');
-    
     const bList = document.getElementById('boss-list');
     if(bList) {
         bList.innerHTML = bosses.map((b, i) => {
@@ -186,4 +218,5 @@ window.switchTab = function(tab, el) {
     document.getElementById('tab-' + tab).classList.add('active');
     el.classList.add('active');
 };
+
 init();
