@@ -3,36 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACL Quest</title>
+    <title>ACL Quest: Titan Protocol</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="app-container">
+        
         <section id="tab-neo" class="section active">
-            <div class="card mascot-card">
+            <div class="card mascot-card card-pattern" style="text-align: center;">
+                <div id="streak-display" class="streak-badge">Streak: 0 Days</div>
                 <div id="mascot-container">
                     <img id="neo-img" src="neo-v1.png" alt="Neo">
                 </div>
-                <h2 id="neo-lvl">Level 1</h2>
+                <h2 id="neo-lvl" style="margin: 5px 0;">Level 1</h2>
+                
                 <div class="stats-grid">
-                    <div class="stat-box">STR <b id="str">1.0</b></div>
-                    <div class="stat-box">AGI <b id="agi">1.0</b></div>
-                    <div class="stat-box">VIT <b id="vit">1.0</b></div>
+                    <div class="stat-box">STR <br><b id="str">1.0</b></div>
+                    <div class="stat-box">AGI <br><b id="agi">1.0</b></div>
+                    <div class="stat-box">VIT <br><b id="vit">1.0</b></div>
                 </div>
-                <div id="adventure-status">Loading Neo...</div>
-                <button id="claim-btn" class="btn-done" style="display:none; width:100%; margin-top:15px;" onclick="claimLoot()">Claim Adventure Loot</button>
+                
+                <div id="adventure-status" style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px;">
+                    Complete daily tasks to start quest...
+                </div>
+                <button id="claim-btn" class="btn-done" style="display:none; width:100%;" onclick="claimLoot()">
+                    🎁 Claim Adventure Loot
+                </button>
             </div>
 
             <div class="card">
-                <h3>Today's Routine</h3>
+                <h3 style="margin: 0 0 15px 0; color: var(--accent);">Daily Objectives</h3>
                 <div id="active-list"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin: 0 0 10px 0;">Neo's Gear Bag</h3>
+                <div id="inventory-list"></div>
             </div>
         </section>
 
         <section id="tab-roadmap" class="section">
-            <div class="card">
-                <h3>Recovery Roadmap</h3>
+            <div class="card card-pattern">
+                <h3 style="margin: 0 0 15px 0;">Mastery Library</h3>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">
+                    Preview all 100+ potential training modules. Items are randomly rotated into your daily objectives.
+                </p>
                 <div id="locked-list"></div>
             </div>
         </section>
@@ -40,16 +55,20 @@
         <section id="tab-logs" class="section">
             <div class="card">
                 <h3>Fuel Neo</h3>
-                <input type="text" id="meal-name" placeholder="Meal name">
-                <input type="number" id="meal-cals" placeholder="Calories">
-                <button class="btn-done" style="width:100%; margin-top:10px;" onclick="logMeal()">Log Meal</button>
+                <input type="text" id="meal-name" placeholder="Meal Name (e.g., Protein Shake)">
+                <input type="number" id="meal-cals" placeholder="Approx. Calories">
+                <button class="btn-done" style="width:100%" onclick="logMeal()">Log Fuel</button>
             </div>
             <div id="history-list"></div>
         </section>
 
         <section id="tab-boss" class="section">
-            <div id="boss-list"></div>
+            <div class="card-pattern" style="padding: 10px;">
+                <h2 style="text-align: center; color: var(--accent);">The Gauntlet</h2>
+                <div id="boss-list"></div>
+            </div>
         </section>
+
     </div>
 
     <nav class="bottom-nav">
