@@ -51,9 +51,25 @@ const lootTable = [
 ];
 
 const bosses = [
-    { name: "Swelling Slime", req: 15, icon: "💧" },
-    { name: "The Crutch King", req: 30, icon: "🩼" },
-    { name: "Scar Tissue Titan", req: 60, icon: "⚔️" }
+    // --- EARLY GAME (The Injury Phase) ---
+    { name: "Swelling Slime", req: 15, icon: "💧" },      // Fluid buildup
+    { name: "The Rusty Hinge", req: 30, icon: "🚪" },     // Range of Motion struggle
+    { name: "The Crutch King", req: 45, icon: "🩼" },     // Walking independently
+    
+    // --- MID GAME (The Strength Phase) ---
+    { name: "Atrophy Assassin", req: 65, icon: "👻" },    // Fighting muscle loss
+    { name: "The Limp Lizard", req: 85, icon: "🦎" },     // Normalizing gait
+    { name: "Scar Tissue Golem", req: 110, icon: "🗿" },  // Breaking up tissue
+    { name: "Instability Elemental", req: 140, icon: "🌪️" }, // Balance & Proprioception
+    
+    // --- LATE GAME (The Impact Phase) ---
+    { name: "The Impact Warden", req: 175, icon: "🔨" },  // Jumping/Running
+    { name: "Stairway Sentinel", req: 210, icon: "🪜" },  // Stairs/Climbing mastery
+    { name: "The Biodex Beast", req: 250, icon: "🤖" },   // Isokinetic testing machine
+    
+    // --- END GAME (Titan Status) ---
+    { name: "Gravity Giant", req: 300, icon: "🌍" },      // Heavy lifting
+    { name: "The ACL Lich", req: 400, icon: "💀" }        // The final fear of re-injury
 ];
 
 // The 5-Minute (300 seconds) Mobility Stretches
