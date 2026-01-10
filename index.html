@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACL Quest: Titan Protocol</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Titan Protocol</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1e293b">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
-        
         <section id="tab-neo" class="section active">
             <div class="card mascot-card card-pattern" style="text-align: center;">
                 <div id="streak-display" class="streak-badge">Streak: 0 Days</div>
@@ -16,47 +21,33 @@
                     <img id="neo-img" src="neo-v1.png" alt="Neo">
                 </div>
                 <h2 id="neo-lvl" style="margin: 5px 0;">Level 1</h2>
-                
                 <div class="stats-grid">
                     <div class="stat-box">STR <br><b id="str">1.0</b></div>
                     <div class="stat-box">AGI <br><b id="agi">1.0</b></div>
                     <div class="stat-box">VIT <br><b id="vit">1.0</b></div>
                 </div>
-                
-                <div id="adventure-status" style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px;">
-                    Loading status...
-                </div>
-                <button id="claim-btn" class="btn-done" style="display:none; width:100%;" onclick="claimLoot()">
-                    🎁 Claim Adventure Loot
-                </button>
+                <div id="adventure-status" style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px;">Loading...</div>
+                <button id="claim-btn" class="btn-done" style="display:none; width:100%;" onclick="claimLoot()">🎁 Claim Loot</button>
             </div>
-
             <div class="card">
                 <h3 style="margin: 0 0 15px 0; color: var(--accent);">Daily Objectives</h3>
                 <div id="active-list"></div>
             </div>
-
             <div class="card">
-                <h3 style="margin: 0 0 10px 0;">Neo's Gear Bag</h3>
+                <h3 style="margin: 0 0 10px 0;">Gear Bag</h3>
                 <div id="inventory-list"></div>
             </div>
         </section>
 
         <section id="tab-roadmap" class="section">
-            <div class="card card-pattern">
-                <h3 style="margin: 0 0 15px 0;">Mastery Library</h3>
-                <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 20px;">
-                    Full database of exercises customized for 35lb Dumbbell, Bands, and Jugs.
-                </p>
-                <div id="locked-list"></div>
-            </div>
+            <div class="card card-pattern"><h3>Library</h3><div id="locked-list"></div></div>
         </section>
 
         <section id="tab-logs" class="section">
             <div class="card">
-                <h3>Fuel Neo</h3>
-                <input type="text" id="meal-name" placeholder="Meal Name (e.g., Protein Shake)">
-                <input type="number" id="meal-cals" placeholder="Approx. Calories">
+                <h3>Fuel</h3>
+                <input type="text" id="meal-name" placeholder="Meal Name">
+                <input type="number" id="meal-cals" placeholder="Calories">
                 <button class="btn-done" style="width:100%" onclick="logMeal()">Log Fuel</button>
             </div>
             <div id="history-list"></div>
@@ -68,7 +59,6 @@
                 <div id="boss-list"></div>
             </div>
         </section>
-
     </div>
 
     <nav class="bottom-nav">
@@ -77,7 +67,6 @@
         <div class="nav-item" onclick="switchTab('logs', this)">🥗</div>
         <div class="nav-item" onclick="switchTab('boss', this)">👹</div>
     </nav>
-
     <script src="script.js"></script>
 </body>
 </html>
