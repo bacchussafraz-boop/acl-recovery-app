@@ -1,24 +1,25 @@
 // --- 1. DATA CONSTANTS ---
 
+// The "Expanded" Loot Table (Common, Rare, Epic, Legendary)
 const lootTable = [
-    // --- COMMON (Consumables) ---
+    // COMMON
     { name: "Protein Shake", boost: "str", value: 0.5, icon: "🥤" },
     { name: "Electrolytes", boost: "agi", value: 0.5, icon: "⚡" },
     { name: "Fish Oil Pills", boost: "vit", value: 0.5, icon: "🐟" },
-    { name: "Banana of Potassium", boost: "vit", value: 0.5, icon: "🍌" },
+    { name: "Banana", boost: "vit", value: 0.5, icon: "🍌" },
     { name: "Cheap Knee Sleeve", boost: "agi", value: 0.5, icon: "🧦" },
     { name: "Ibuprofen", boost: "vit", value: 0.5, icon: "💊" },
     { name: "Bag of Ice", boost: "vit", value: 0.5, icon: "🧊" },
     { name: "Gym Chalk", boost: "str", value: 0.5, icon: "☁️" },
-    { name: "Roll of KT Tape", boost: "agi", value: 0.5, icon: "🩹" },
-    { name: "Espresso Shot", boost: "agi", value: 0.5, icon: "☕" },
+    { name: "KT Tape", boost: "agi", value: 0.5, icon: "🩹" },
+    { name: "Espresso", boost: "agi", value: 0.5, icon: "☕" },
 
-    // --- RARE (Gear & Equipment) ---
+    // RARE
     { name: "Rubber Band of Power", boost: "str", value: 1.0, icon: "🎗️" },
-    { name: "Foam Roller of Agony", boost: "vit", value: 1.0, icon: "🥖" },
+    { name: "Foam Roller", boost: "vit", value: 1.0, icon: "🥖" },
     { name: "Gallon of Gains", boost: "str", value: 1.2, icon: "🍶" },
-    { name: "Yoga Mat of Zen", boost: "vit", value: 1.0, icon: "🧘" },
-    { name: "Ankle Weights of Burden", boost: "str", value: 1.2, icon: "⚓" },
+    { name: "Yoga Mat", boost: "vit", value: 1.0, icon: "🧘" },
+    { name: "Ankle Weights", boost: "str", value: 1.2, icon: "⚓" },
     { name: "Compression Tights", boost: "agi", value: 1.1, icon: "👖" },
     { name: "Massage Gun", boost: "vit", value: 1.2, icon: "🔫" },
     { name: "Heavy Jump Rope", boost: "agi", value: 1.2, icon: "➰" },
@@ -27,7 +28,7 @@ const lootTable = [
     { name: "Iron Dumbbell", boost: "str", value: 1.3, icon: "🏋️" },
     { name: "Stability Ball", boost: "agi", value: 1.1, icon: "🔵" },
     
-    // --- EPIC (Titan Upgrades) ---
+    // EPIC
     { name: "Excalibur's Crutch", boost: "agi", value: 2.0, icon: "🦯" },
     { name: "Titanium Meniscus", boost: "str", value: 2.5, icon: "🦾" },
     { name: "Ancient Ice Pack", boost: "vit", value: 2.0, icon: "❄️" },
@@ -36,43 +37,42 @@ const lootTable = [
     { name: "Surgeon's Blessing", boost: "vit", value: 3.0, icon: "✨" },
     { name: "Golden Hamstring", boost: "agi", value: 2.4, icon: "🦵" },
     { name: "Proprioception Prism", boost: "agi", value: 2.3, icon: "💎" },
-    { name: "Cryo-Cuff of Cooling", boost: "vit", value: 2.5, icon: "🥶" },
-    { name: "Scar Tissue Scraper", boost: "vit", value: 2.1, icon: "🗡️" },
-    { name: "Platelet Rich Potion", boost: "vit", value: 2.8, icon: "🧪" },
+    { name: "Cryo-Cuff", boost: "vit", value: 2.5, icon: "🥶" },
+    { name: "Platelet Potion", boost: "vit", value: 2.8, icon: "🧪" },
     
-    // --- LEGENDARY (Game Changers) ---
+    // LEGENDARY
     { name: "The Untearable Ligament", boost: "str", value: 5.0, icon: "🧬" },
     { name: "Cybernetic Leg Brace", boost: "agi", value: 4.5, icon: "🦿" },
     { name: "Scroll of Full ROM", boost: "agi", value: 5.0, icon: "📜" },
     { name: "Heart of the Comeback", boost: "vit", value: 5.0, icon: "❤️" },
     { name: "Neo's Golden Wings", boost: "agi", value: 6.0, icon: "💸" },
-    { name: "The Surgeon's Scalpel", boost: "str", value: 5.5, icon: "🔪" },
-    { name: "Fountain of Youth Water", boost: "vit", value: 5.5, icon: "⛲" }
+    { name: "Fountain of Youth", boost: "vit", value: 5.5, icon: "⛲" }
 ];
 
+// The Full 12-Boss Gauntlet
 const bosses = [
-    // --- EARLY GAME (The Injury Phase) ---
-    { name: "Swelling Slime", req: 15, icon: "💧" },      // Fluid buildup
-    { name: "The Rusty Hinge", req: 30, icon: "🚪" },     // Range of Motion struggle
-    { name: "The Crutch King", req: 45, icon: "🩼" },     // Walking independently
+    // EARLY GAME
+    { name: "Swelling Slime", req: 15, icon: "💧" },
+    { name: "The Rusty Hinge", req: 30, icon: "🚪" },
+    { name: "The Crutch King", req: 45, icon: "🩼" },
     
-    // --- MID GAME (The Strength Phase) ---
-    { name: "Atrophy Assassin", req: 65, icon: "👻" },    // Fighting muscle loss
-    { name: "The Limp Lizard", req: 85, icon: "🦎" },     // Normalizing gait
-    { name: "Scar Tissue Golem", req: 110, icon: "🗿" },  // Breaking up tissue
-    { name: "Instability Elemental", req: 140, icon: "🌪️" }, // Balance & Proprioception
+    // MID GAME
+    { name: "Atrophy Assassin", req: 65, icon: "👻" },
+    { name: "The Limp Lizard", req: 85, icon: "🦎" },
+    { name: "Scar Tissue Golem", req: 110, icon: "🗿" },
+    { name: "Instability Elemental", req: 140, icon: "🌪️" },
     
-    // --- LATE GAME (The Impact Phase) ---
-    { name: "The Impact Warden", req: 175, icon: "🔨" },  // Jumping/Running
-    { name: "Stairway Sentinel", req: 210, icon: "🪜" },  // Stairs/Climbing mastery
-    { name: "The Biodex Beast", req: 250, icon: "🤖" },   // Isokinetic testing machine
+    // LATE GAME
+    { name: "The Impact Warden", req: 175, icon: "🔨" },
+    { name: "Stairway Sentinel", req: 210, icon: "🪜" },
+    { name: "The Biodex Beast", req: 250, icon: "🤖" },
     
-    // --- END GAME (Titan Status) ---
-    { name: "Gravity Giant", req: 300, icon: "🌍" },      // Heavy lifting
-    { name: "The ACL Lich", req: 400, icon: "💀" }        // The final fear of re-injury
+    // END GAME
+    { name: "Gravity Giant", req: 300, icon: "🌍" },
+    { name: "The ACL Lich", req: 400, icon: "💀" }
 ];
 
-// The 5-Minute (300 seconds) Mobility Stretches
+// 5-Minute Mobility Stretches
 const mobilityStretches = [
     { id: 'm1', name: "Heel Prop (Extension)", time: 300 },
     { id: 'm2', name: "Couch Stretch (Quads)", time: 300 },
@@ -81,7 +81,7 @@ const mobilityStretches = [
     { id: 'm5', name: "World's Greatest Stretch", time: 300 }
 ];
 
-// The Curated Exercise List (35lb DB / Bands / Jugs)
+// Exercise Database
 const exerciseMasterList = [
     { id: 101, name: "35lb Goblet Squats", baseReps: 10, weight: 35, type: "Legs", equip: "35lb DB" },
     { id: 102, name: "Banded Monster Walks", baseReps: 15, weight: 0, type: "Legs", equip: "Band" },
@@ -238,8 +238,7 @@ function renderWorkouts() {
     mobilityStretches.forEach(m => {
         const isDone = (state.completedToday || []).includes(m.id);
         const isCurrentTimer = timerTargetId === m.id;
-        const canClickDone = (timeLeft <= 0 && isCurrentTimer) || isDone; // Only active after timer or if done
-
+        
         mobilityHTML += `
             <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(0,0,0,0.2); margin-bottom:5px; border-radius:8px;">
                 <div style="flex:1">
@@ -385,7 +384,7 @@ function updateMascotUI() {
 
     if (streakEl) streakEl.innerText = `🔥 Streak: ${state.streak} Days`;
     
-    // Evolution Thresholds (Start Level 1)
+    // Evolution Thresholds
     if (tot >= 40) img.src = "neo-v3.png";
     else if (tot >= 15) img.src = "neo-v2.png";
     else img.src = "neo-v1.png";
@@ -406,15 +405,14 @@ function renderAll() {
     const hist = document.getElementById('history-list');
     if(hist) hist.innerHTML = state.meals.slice(0,3).map(m => `<div class='workout-item' style='font-size:0.8rem;'>${m}</div>`).join('');
     
-   const bList = document.getElementById('boss-list');
+    // --- UPDATED BOSS RENDER LOGIC ---
+    const bList = document.getElementById('boss-list');
     if(bList) {
         bList.innerHTML = bosses.map((b, i) => {
             const defeated = state.bossesDefeated > i;
-            // Calculate Total Stats
             const totalStats = state.str + state.agi + state.vit;
             const canFight = !defeated && (totalStats >= b.req);
             
-            // Logic: If defeated, show Green. If fightable, show Button. If locked, show Padlock.
             let actionHTML = '';
             if (defeated) {
                 actionHTML = `<span style="color:var(--success); font-weight:bold;">DEFEATED</span>`;
@@ -439,7 +437,6 @@ function renderAll() {
                 </div>
             </div>`;
         }).join('');
-    }
     }
 }
 
