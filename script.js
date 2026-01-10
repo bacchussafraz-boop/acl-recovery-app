@@ -406,14 +406,40 @@ function renderAll() {
     const hist = document.getElementById('history-list');
     if(hist) hist.innerHTML = state.meals.slice(0,3).map(m => `<div class='workout-item' style='font-size:0.8rem;'>${m}</div>`).join('');
     
-    const bList = document.getElementById('boss-list');
+   const bList = document.getElementById('boss-list');
     if(bList) {
         bList.innerHTML = bosses.map((b, i) => {
             const defeated = state.bossesDefeated > i;
-            const canFight = !defeated && (state.str + state.agi + state.vit >= b.req);
-            return `<div class='card' style='opacity:${defeated?0.5:1}'><b>${b.icon} ${b.name}</b><br>
-            ${defeated?'✅': canFight ? `<button class='btn-done' onclick='fightBoss(${i})'>FIGHT</button>`:'🔒'}</div>`;
+            // Calculate Total Stats
+            const totalStats = state.str + state.agi + state.vit;
+            const canFight = !defeated && (totalStats >= b.req);
+            
+            // Logic: If defeated, show Green. If fightable, show Button. If locked, show Padlock.
+            let actionHTML = '';
+            if (defeated) {
+                actionHTML = `<span style="color:var(--success); font-weight:bold;">DEFEATED</span>`;
+            } else if (canFight) {
+                actionHTML = `<button class='btn-done' onclick='fightBoss(${i})' style="width:100%;">FIGHT (Req: ${b.req})</button>`;
+            } else {
+                actionHTML = `<span style="color:#94a3b8; font-size:0.8rem;">🔒 Locked (Req: ${b.req})</span>`;
+            }
+
+            return `
+            <div class='card' style='
+                border: 1px solid ${defeated ? 'var(--success)' : (canFight ? 'var(--accent)' : 'transparent')};
+                opacity: ${defeated ? 0.6 : 1};
+                display: flex; justify-content: space-between; align-items: center;
+            '>
+                <div style="text-align:left;">
+                    <div style="font-size:1.2rem;">${b.icon}</div>
+                    <div style="font-weight:bold; color:${defeated ? 'var(--success)' : 'white'}">${b.name}</div>
+                </div>
+                <div style="text-align:right;">
+                    ${actionHTML}
+                </div>
+            </div>`;
         }).join('');
+    }
     }
 }
 
