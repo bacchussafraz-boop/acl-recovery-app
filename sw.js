@@ -1,10 +1,11 @@
-const CACHE_NAME = 'acl-quest-v4';
+const CACHE_NAME = 'titan-protocol-v5';
 const ASSETS = [
   './',
   './index.html',
   './style.css',
   './script.js',
-  './manifest.json'
+  './manifest.json',
+  './neo-v1.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -12,5 +13,5 @@ self.addEventListener('install', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(caches.match(e.request).then((res) => res || fetch(e.request)));
+  e.respondWith(caches.match(e.request).then((response) => response || fetch(e.request)));
 });
