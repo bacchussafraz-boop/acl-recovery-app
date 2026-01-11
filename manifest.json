@@ -1,10 +1,11 @@
 {
-  "name": "ACL Quest",
-  "short_name": "ACLQuest",
-  "start_url": "index.html",
+  "name": "Titan Protocol",
+  "short_name": "Titan",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f0f2f5",
-  "theme_color": "#6c5ce7",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3048/3048398.png",
