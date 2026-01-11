@@ -294,3 +294,169 @@ function renderWorkouts() {
 }
 
 // --- 6. ACTION HANDLERS ---
+
+window.completeMobilityTask = function(taskId) {
+    if (!state.completedToday.includes(taskId)) {
+        state.completedToday.push(taskId);
+        
+        // Check if ALL mobility tasks are done
+        const allMobilityDone = mobilityStretches.every(m => state.completedToday.includes(m.id));
+        if (allMobilityDone) {
+            state.mobilityDone = true;
+            state.vit += 0.5;
+            alert("Mobility Gate Open! +0.5 VIT. Neo is ready to adventure tonight.");
+        }
+        
+        // Reset timer vars
+        if(timerTargetId === taskId) {
+            clearInterval(activeTimer);
+            activeTimer = null;
+            timerTargetId = null;
+        }
+        
+        save(); renderAll();
+    }
+};
+
+window.completeWorkout = function(id) {
+    if(state.completedToday.includes(id)) return;
+    state.completedToday.push(id);
+    const s = state.exerciseStats[id];
+    
+    // Scale Difficulty: Add 1 rep or reset reps/add set
+    if(typeof s.reps === 'number') s.reps += 1;
+    if(s.reps > 20) { s.reps = 10; s.sets += 1; }
+    
+    // Stats + Streak Bonus
+    const bonus = Math.floor(state.streak / 5) * 0.1;
+    state.str += (0.4 + bonus); 
+    state.xp += 20;
+    save(); renderAll();
+};
+
+window.claimLoot = function() {
+    const item = lootTable[Math.floor(Math.random()*lootTable.length)];
+    state.inventory.unshift(`${item.icon} ${item.name}`);
+    state[item.boost] += item.value;
+    state.adventureActive = false;
+    save(); renderAll();
+    alert(`Neo found: ${item.name}!`);
+};
+
+window.logMeal = function() {
+    const n = document.getElementById('meal-name').value;
+    const c = document.getElementById('meal-cals').value;
+    if(!n || !c) return;
+    const boost = parseFloat((c/500).toFixed(1));
+    state.vit += boost; state.meals.unshift(`${n} (+${boost} VIT)`);
+    save(); renderAll();
+};
+
+window.fightBoss = function(idx) {
+    const b = bosses[idx];
+    if((state.str + state.agi + state.vit) >= b.req) {
+        state.bossesDefeated = idx + 1;
+        state.xp += 100;
+        save(); renderAll();
+        alert(`VICTORY! Defeated ${b.name}!`);
+    }
+};
+
+// --- 7. UI HELPERS ---
+
+function checkAdventureTime() {
+    const hrs = new Date().getHours();
+    const btn = document.getElementById('claim-btn');
+    const status = document.getElementById('adventure-status');
+    if(!status) return;
+
+    const workCount = state.completedToday.filter(id => typeof id === 'number').length;
+    const allWorkoutsDone = workCount >= 8;
+    
+    if (allWorkoutsDone && state.mobilityDone) {
+        if (hrs >= 21) {
+            status.innerText = "Neo is back with loot!";
+            btn.style.display = "block";
+        } else {
+            status.innerText = "Neo is questing... (Back at 9PM)";
+            btn.style.display = "none";
+        }
+    } else {
+        const rem = 8 - workCount;
+        status.innerText = !state.mobilityDone ? "Mobility Gate Locked." : `${rem} workouts needed.`;
+        btn.style.display = "none";
+    }
+}
+
+function updateMascotUI() {
+    const tot = state.str + state.agi + state.vit;
+    const img = document.getElementById('neo-img');
+    const streakEl = document.getElementById('streak-display');
+    if(!img) return;
+
+    if (streakEl) streakEl.innerText = `🔥 Streak: ${state.streak} Days`;
+    
+    // Evolution Thresholds
+    if (tot >= 40) img.src = "neo-v3.png";
+    else if (tot >= 15) img.src = "neo-v2.png";
+    else img.src = "neo-v1.png";
+    
+    document.getElementById('str').innerText = state.str.toFixed(1);
+    document.getElementById('agi').innerText = state.agi.toFixed(1);
+    document.getElementById('vit').innerText = state.vit.toFixed(1);
+    document.getElementById('neo-lvl').innerText = `Lvl ${Math.max(1, Math.floor(tot/2))}`;
+}
+
+function renderAll() {
+    renderWorkouts(); 
+    updateMascotUI();
+    
+    const inv = document.getElementById('inventory-list');
+    if(inv) inv.innerHTML = state.inventory.map(i => `<span class='item-chip'>${i}</span>`).join('');
+    
+    const hist = document.getElementById('history-list');
+    if(hist) hist.innerHTML = state.meals.slice(0,3).map(m => `<div class='workout-item' style='font-size:0.8rem;'>${m}</div>`).join('');
+    
+    // --- UPDATED BOSS RENDER LOGIC ---
+    const bList = document.getElementById('boss-list');
+    if(bList) {
+        bList.innerHTML = bosses.map((b, i) => {
+            const defeated = state.bossesDefeated > i;
+            const totalStats = state.str + state.agi + state.vit;
+            const canFight = !defeated && (totalStats >= b.req);
+            
+            let actionHTML = '';
+            if (defeated) {
+                actionHTML = `<span style="color:var(--success); font-weight:bold;">DEFEATED</span>`;
+            } else if (canFight) {
+                actionHTML = `<button class='btn-done' onclick='fightBoss(${i})' style="width:100%;">FIGHT (Req: ${b.req})</button>`;
+            } else {
+                actionHTML = `<span style="color:#94a3b8; font-size:0.8rem;">🔒 Locked (Req: ${b.req})</span>`;
+            }
+
+            return `
+            <div class='card' style='
+                border: 1px solid ${defeated ? 'var(--success)' : (canFight ? 'var(--accent)' : 'transparent')};
+                opacity: ${defeated ? 0.6 : 1};
+                display: flex; justify-content: space-between; align-items: center;
+            '>
+                <div style="text-align:left;">
+                    <div style="font-size:1.2rem;">${b.icon}</div>
+                    <div style="font-weight:bold; color:${defeated ? 'var(--success)' : 'white'}">${b.name}</div>
+                </div>
+                <div style="text-align:right;">
+                    ${actionHTML}
+                </div>
+            </div>`;
+        }).join('');
+    }
+}
+
+window.switchTab = function(tab, el) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    el.classList.add('active');
+};
+
+init();
