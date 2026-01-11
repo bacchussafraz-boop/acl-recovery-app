@@ -154,19 +154,37 @@ function save() { localStorage.setItem('acl_titan_final', JSON.stringify(state))
 function init() {
     const today = new Date().toDateString();
     
-    // Day Reset Logic
+    // Day Reset Logic: Runs if it's a new day
     if (state.lastReset !== today) {
-        const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-        if (state.lastReset !== yesterday.toDateString() && state.lastReset) {
-            state.streak = 0; // Streak broken
-        } else if (state.lastReset) {
-            state.streak++;
+        
+        // --- STREAK LOGIC FIXED ---
+        const yesterday = new Date(); 
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        // Only check streak if this isn't the first time ever running the app
+        if (state.lastReset) {
+            // 1. Did we login yesterday?
+            const wasYesterday = state.lastReset === yesterday.toDateString();
+            
+            // 2. Did we actually FINISH the work? (Mobility + 8 Exercises)
+            const workCount = (state.completedToday || []).filter(id => typeof id === 'number').length;
+            const isComplete = state.mobilityDone && workCount >= 8;
+
+            if (wasYesterday && isComplete) {
+                // You logged in yesterday AND finished the work. Streak goes up!
+                state.streak++;
+            } else {
+                // You missed yesterday OR you logged in but didn't finish. Streak reset.
+                state.streak = 0;
+            }
         } else {
-            state.streak = 1;
+            // First time ever
+            state.streak = 0;
         }
 
+        // --- RESET FOR TODAY ---
         state.lastReset = today;
-        state.completedToday = [];
+        state.completedToday = []; // Wipe progress for the new day
         state.mobilityDone = false; 
         generateDailyRoutine();
         save();
@@ -359,7 +377,8 @@ function checkAdventureTime() {
     const status = document.getElementById('adventure-status');
     if(!status) return;
 
-    const allWorkoutsDone = state.completedToday.filter(id => typeof id === 'number').length >= 8;
+    const workCount = state.completedToday.filter(id => typeof id === 'number').length;
+    const allWorkoutsDone = workCount >= 8;
     
     if (allWorkoutsDone && state.mobilityDone) {
         if (hrs >= 21) {
@@ -370,7 +389,7 @@ function checkAdventureTime() {
             btn.style.display = "none";
         }
     } else {
-        const rem = 8 - state.completedToday.filter(id => typeof id === 'number').length;
+        const rem = 8 - workCount;
         status.innerText = !state.mobilityDone ? "Mobility Gate Locked." : `${rem} workouts needed.`;
         btn.style.display = "none";
     }
